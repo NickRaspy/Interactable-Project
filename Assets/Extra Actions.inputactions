@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "name": "Extra Actions",
+    "maps": [
+        {
+            "name": "UI",
+            "id": "e9ba5a23-f4bd-4ad1-9ed1-2bb883f30687",
+            "actions": [
+                {
+                    "name": "HideUIText",
+                    "type": "Button",
+                    "id": "f08ec07c-61f7-4b26-893e-609ec5c9bca4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0b030e56-5149-4ae5-a6cb-0409f4af671d",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HideUIText",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "697c84a5-fd7c-4fa1-a7ac-f8ef00decad6",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HideUIText",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

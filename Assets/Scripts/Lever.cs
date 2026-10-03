@@ -21,6 +21,8 @@ public class Lever : MonoBehaviour
     private float _grabLeverAngle;
     private float _leverAngle = OffAngle;
 
+    private bool canUse;
+
     public bool IsOn { get; private set; }
 
     private void Awake()
@@ -50,6 +52,7 @@ public class Lever : MonoBehaviour
         {
             Debug.LogWarning("Lever needs a controller under an XR Origin.", this);
             _hand = null;
+            _xrOrigin = null;
             return;
         }
 
@@ -59,10 +62,10 @@ public class Lever : MonoBehaviour
 
     private void Update()
     {
-        if (_hand == null) return;
+        if (!_hand || !canUse) return;
 
-        float handTravel = GetHandHeight() - _grabHandHeight;
-        float degreesPerMeter = (OffAngle - OnAngle) / Mathf.Max(0.01f, handTravelForFullStroke);
+        var handTravel = GetHandHeight() - _grabHandHeight;
+        var degreesPerMeter = (OffAngle - OnAngle) / Mathf.Max(0.01f, handTravelForFullStroke);
         _leverAngle = Mathf.Clamp(_grabLeverAngle + handTravel * degreesPerMeter, OnAngle, OffAngle);
         pivot.localRotation = Quaternion.Euler(0f, 0f, _leverAngle);
     }
@@ -73,18 +76,24 @@ public class Lever : MonoBehaviour
         _hand = null;
         _xrOrigin = null;
 
-        bool switchedOn = _leverAngle <= SwitchAngle;
+        var switchedOn = _leverAngle <= SwitchAngle;
         _leverAngle = switchedOn ? OnAngle : OffAngle;
         pivot.localRotation = Quaternion.Euler(0f, 0f, _leverAngle);
 
-        if (!IsOn && switchedOn)
-            onSwitchedOn?.Invoke();
-
+        var wasOn = IsOn;
         IsOn = switchedOn;
+
+        if (wasOn || !switchedOn) return;
+        
+        onSwitchedOn?.Invoke();
+        canUse = false;
+
     }
 
     private float GetHandHeight()
     {
         return _xrOrigin.transform.InverseTransformPoint(_hand.position).y;
     }
+
+    public void AllowUse() => canUse = true;
 }
